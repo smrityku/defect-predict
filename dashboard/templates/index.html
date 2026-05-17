@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DefectPredict</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+     background:#F0F2F5;color:#1A202C;font-size:14px}
+
+/* ── Sidebar ─────────────────────────────────────── */
+.sb{position:fixed;top:0;left:0;width:220px;height:100vh;
+    background:#1A202C;color:#A0AEC0;overflow-y:auto;z-index:99}
+.sb-brand{padding:20px;border-bottom:1px solid #2D3748;
+          font-size:16px;font-weight:700;color:#fff}
+.sb-brand span{color:#63B3ED}
+.nav-sec{padding:14px 20px 4px;font-size:10px;text-transform:uppercase;
+         letter-spacing:1px;color:#4A5568}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;
+          color:#A0AEC0;cursor:pointer;border-left:3px solid transparent;
+          transition:all .15s}
+.nav-item:hover,.nav-item.active{color:#fff;background:#2D3748;
+                                  border-left-color:#63B3ED}
+.nav-icon{font-size:16px;width:20px;text-align:center}
+
+/* ── Main ────────────────────────────────────────── */
+.main{margin-left:220px;padding:24px;min-height:100vh}
+.page{display:none}.page.active{display:block}
+.page-title{font-size:20px;font-weight:700;margin-bottom:4px}
+.page-sub{color:#718096;margin-bottom:22px}
+
+/* ── Cards ───────────────────────────────────────── */
+.card{background:#fff;border-radius:10px;padding:20px;
+      box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.card-title{font-size:12px;font-weight:600;color:#718096;
+            text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
+
+/* ── Stats ───────────────────────────────────────── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));
+           gap:14px;margin-bottom:20px}
+.stat{background:#fff;border-radius:10px;padding:18px;
+      box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.stat-val{font-size:30px;font-weight:700;line-height:1}
+.stat-lbl{color:#718096;font-size:12px;margin-top:5px}
+.c-blue{color:#3182CE}.c-red{color:#E53E3E}
+.c-orange{color:#DD6B20}.c-green{color:#38A169}
+
+/* ── Chart grid ──────────────────────────────────── */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.chart-box{position:relative;height:260px}
+
+/* ── Table ───────────────────────────────────────── */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#F7FAFC;padding:9px 12px;text-align:left;
+   border-bottom:2px solid #E2E8F0;font-weight:600;color:#4A5568;white-space:nowrap}
+td{padding:8px 12px;border-bottom:1px solid #EDF2F7;
+   max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:hover td{background:#F7FAFC}
+
+/* ── Badges ──────────────────────────────────────── */
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;
+       font-size:11px;font-weight:600}
+.b-critical{background:#FED7D7;color:#C53030}
+.b-high    {background:#FEEBC8;color:#C05621}
+.b-medium  {background:#FEFCBF;color:#975A16}
+.b-low     {background:#C6F6D5;color:#276749}
+
+/* ── Progress ────────────────────────────────────── */
+.pbar{background:#EDF2F7;border-radius:4px;height:7px;overflow:hidden;width:80px}
+.pfill{height:100%;border-radius:4px;
+       background:linear-gradient(90deg,#68D391,#F6AD55,#FC8181)}
+
+/* ── Filters / inputs ────────────────────────────── */
+.filters{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+select,input[type=text]{padding:7px 11px;border:1px solid #E2E8F0;
+                         border-radius:6px;font-size:13px;background:#fff;outline:none}
+select:focus,input:focus{border-color:#63B3ED}
+input[type=text]{flex:1;min-width:180px}
+
+/* ── Pipeline ────────────────────────────────────── */
+.run-row{display:flex;gap:10px;margin-bottom:16px}
+.run-input{flex:1;padding:9px 13px;border:1px solid #E2E8F0;
+           border-radius:8px;font-size:14px;outline:none}
+.run-input:focus{border-color:#63B3ED}
+.btn{padding:9px 20px;border:none;border-radius:8px;font-size:13px;
+     font-weight:600;cursor:pointer;transition:.15s}
+.btn-primary{background:#3182CE;color:#fff}
+.btn-primary:hover{background:#2B6CB0}
+.btn-primary:disabled{background:#A0AEC0;cursor:not-allowed}
+.log-box{background:#1A202C;color:#A0AEC0;font-family:monospace;
+         font-size:12px;padding:14px;border-radius:8px;
+         height:190px;overflow-y:auto;white-space:pre-wrap}
+.log-ok{color:#68D391}.log-err{color:#FC8181}
+
+/* ── Model table highlight ───────────────────────── */
+.best-row td{background:#BEE3F8!important;font-weight:600}
+
+/* ── Img grid ────────────────────────────────────── */
+.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.img-grid img{width:100%;border-radius:8px;border:1px solid #E2E8F0}
+
+@media(max-width:720px){
+  .sb{width:56px}.sb-brand,.nav-sec,.nav-item span{display:none}
+  .main{margin-left:56px}.chart-grid,.img-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sb">
+  <div class="sb-brand">Defect<span>Predict</span></div>
+  <div class="nav-sec">Analysis</div>
+  <div class="nav-item active" onclick="go('overview',this)">
+    <span class="nav-icon">📊</span><span>Overview</span></div>
+  <div class="nav-item" onclick="go('files',this)">
+    <span class="nav-icon">📁</span><span>File Risk Table</span></div>
+  <div class="nav-item" onclick="go('models',this)">
+    <span class="nav-icon">🤖</span><span>Model Comparison</span></div>
+  <div class="nav-sec">Tools</div>
+  <div class="nav-item" onclick="go('pipeline',this)">
+    <span class="nav-icon">⚙️</span><span>Run Pipeline</span></div>
+</nav>
+
+<main class="main">
+
+<!-- ── OVERVIEW ──────────────────────────────────── -->
+<div id="page-overview" class="page active">
+  <div class="page-title">Overview</div>
+  <div class="page-sub">Defect prediction summary across your codebase</div>
+  <div class="stat-grid">
+    <div class="stat"><div class="stat-val c-blue"  id="s-total">—</div><div class="stat-lbl">Files analysed</div></div>
+    <div class="stat"><div class="stat-val c-red"   id="s-defect">—</div><div class="stat-lbl">Defect rate (%)</div></div>
+    <div class="stat"><div class="stat-val c-orange" id="s-critical">—</div><div class="stat-lbl">Critical files</div></div>
+    <div class="stat"><div class="stat-val c-green"  id="s-f1">—</div><div class="stat-lbl">Best model F1</div></div>
+  </div>
+  <div class="chart-grid">
+    <div class="card"><div class="card-title">Risk distribution</div>
+      <div class="chart-box"><canvas id="ch-risk"></canvas></div></div>
+    <div class="card"><div class="card-title">Files by language</div>
+      <div class="chart-box"><canvas id="ch-lang"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Top 5 highest-risk files</div>
+    <table><thead><tr><th>File</th><th>Score</th><th>Risk</th></tr></thead>
+    <tbody id="top-tbody"></tbody></table>
+  </div>
+</div>
+
+<!-- ── FILES ─────────────────────────────────────── -->
+<div id="page-files" class="page">
+  <div class="page-title">File Risk Table</div>
+  <div class="page-sub">All files ranked by maintenance effort score</div>
+  <div class="filters">
+    <input type="text" id="f-search" placeholder="Search filepath…" oninput="loadFiles()">
+    <select id="f-lang" onchange="loadFiles()"><option value="all">All languages</option></select>
+    <select id="f-risk" onchange="loadFiles()">
+      <option value="all">All risk levels</option>
+      <option>Critical</option><option>High</option>
+      <option>Medium</option><option>Low</option>
+    </select>
+  </div>
+  <div class="card">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>File</th><th>Language</th><th>Defect Prob.</th>
+          <th>Maint. Score</th><th>Risk</th>
+        </tr></thead>
+        <tbody id="files-tbody"></tbody>
+      </table>
+    </div>
+    <div id="files-count" style="color:#718096;font-size:12px;margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- ── MODELS ─────────────────────────────────────── -->
+<div id="page-models" class="page">
+  <div class="page-title">Model Comparison</div>
+  <div class="page-sub">Performance metrics for all trained classifiers</div>
+  <div class="chart-grid">
+    <div class="card"><div class="card-title">F1-Score</div>
+      <div class="chart-box"><canvas id="ch-f1"></canvas></div></div>
+    <div class="card"><div class="card-title">ROC-AUC</div>
+      <div class="chart-box"><canvas id="ch-auc"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Full metrics table</div>
+    <div class="tbl-wrap">
+      <table><thead><tr>
+        <th>Model</th><th>Accuracy</th><th>Precision</th>
+        <th>Recall</th><th>F1</th><th>ROC-AUC</th>
+      </tr></thead>
+      <tbody id="model-tbody"></tbody></table>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-title">Generated plots</div>
+    <div class="img-grid">
+      <img src="/model-images/model_comparison.png" onerror="this.style.display='none'">
+      <img src="/model-images/roc_curves.png"       onerror="this.style.display='none'">
+      <img src="/images/feature_importance.png"     onerror="this.style.display='none'">
+      <img src="/images/maintenance_dist.png"        onerror="this.style.display='none'">
+    </div>
+  </div>
+</div>
+
+<!-- ── PIPELINE ───────────────────────────────────── -->
+<div id="page-pipeline" class="page">
+  <div class="page-title">Run Pipeline</div>
+  <div class="page-sub">Point the tool at a local Git repository to start analysis</div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">Repository path</div>
+    <div class="run-row">
+      <input class="run-input" id="repo-path" type="text"
+             placeholder="/absolute/path/to/your/git/repo">
+      <button class="btn btn-primary" id="run-btn" onclick="runPipeline()">
+        Run Analysis
+      </button>
+    </div>
+    <p style="color:#718096;font-size:12px;line-height:1.6">
+      The pipeline extracts git history → builds code metrics → preprocesses data →
+      trains 4 ML models → scores every file. Typically takes 1–5 minutes.
+    </p>
+  </div>
+  <div class="card">
+    <div class="card-title">Live log</div>
+    <div class="log-box" id="pipe-log">Ready. Enter a repo path above and click Run.</div>
+    <div id="pipe-step" style="color:#3182CE;font-size:13px;font-weight:600;margin-top:8px"></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+/* ── Shared charts ─────────────────────────────────────── */
+let RC=null, LC=null, F1C=null, AUCC=null;
+
+const COLORS = ["#E53E3E","#DD6B20","#D69E2E","#38A169"];
+const MCOLS  = ["#3182CE","#38A169","#DD6B20","#805AD5"];
+
+/* ── Navigation ─────────────────────────────────────────── */
+function go(page, el) {
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+  document.getElementById("page-"+page).classList.add("active");
+  el.classList.add("active");
+  if(page==="overview") loadOverview();
+  if(page==="files")    loadFiles();
+  if(page==="models")   loadModels();
+}
+
+/* ── Overview ───────────────────────────────────────────── */
+async function loadOverview() {
+  const d = await fetch("/api/summary").then(r=>r.json());
+  if(!d.total_files) return;
+
+  document.getElementById("s-total").textContent    = d.total_files;
+  document.getElementById("s-defect").textContent   = d.defect_rate+"%";
+  document.getElementById("s-critical").textContent = d.risk_counts?.Critical||0;
+  document.getElementById("s-f1").textContent       = d.best_metrics?.f1?.toFixed(3)||"—";
+
+  const rl = ["Critical","High","Medium","Low"];
+  if(RC) RC.destroy();
+  RC = new Chart(document.getElementById("ch-risk"),{
+    type:"doughnut",
+    data:{labels:rl,datasets:[{data:rl.map(l=>d.risk_counts?.[l]||0),
+          backgroundColor:COLORS,borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,
+             plugins:{legend:{position:"right"}}}
+  });
+
+  const langs = Object.entries(d.language_counts||{}).slice(0,8);
+  if(LC) LC.destroy();
+  LC = new Chart(document.getElementById("ch-lang"),{
+    type:"bar",
+    data:{labels:langs.map(l=>l[0]),
+          datasets:[{data:langs.map(l=>l[1]),backgroundColor:"#63B3ED",borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,
+             plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
+  });
+
+  document.getElementById("top-tbody").innerHTML =
+    (d.top_files||[]).map(f=>`
+      <tr><td style="font-family:monospace;font-size:12px" title="${f.filepath}">${f.filepath}</td>
+          <td>${(f.maintenance_score||0).toFixed(1)}</td>
+          <td><span class="badge b-${(f.risk_level||'low').toLowerCase()}">${f.risk_level}</span></td>
+      </tr>`).join("");
+}
+
+/* ── Files ──────────────────────────────────────────────── */
+async function loadFiles() {
+  const s  = document.getElementById("f-search").value;
+  const la = document.getElementById("f-lang").value;
+  const ri = document.getElementById("f-risk").value;
+  const url= `/api/predictions?search=${encodeURIComponent(s)}&language=${la}&risk=${ri}`;
+  const d  = await fetch(url).then(r=>r.json());
+
+  // Populate language dropdown once
+  const sel = document.getElementById("f-lang");
+  if(sel.options.length<=1 && d.files?.length) {
+    [...new Set(d.files.map(f=>f.language).filter(Boolean))].sort()
+      .forEach(l=>{ const o=document.createElement("option"); o.value=o.textContent=l; sel.appendChild(o); });
+  }
+
+  const tb = document.getElementById("files-tbody");
+  if(!d.files?.length) {
+    tb.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:40px;color:#718096">
+      No data yet — run the pipeline first.</td></tr>`; return;
+  }
+  tb.innerHTML = d.files.map(f=>{
+    const pct = Math.round((f.defect_probability||0)*100);
+    return `<tr>
+      <td title="${f.filepath}" style="font-family:monospace;font-size:12px">${f.filepath}</td>
+      <td>${f.language||"—"}</td>
+      <td><div style="display:flex;align-items:center;gap:7px">
+            <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
+            <span>${pct}%</span></div></td>
+      <td>${(f.maintenance_score||0).toFixed(1)}</td>
+      <td><span class="badge b-${(f.risk_level||'low').toLowerCase()}">${f.risk_level||"—"}</span></td>
+    </tr>`;
+  }).join("");
+  document.getElementById("files-count").textContent = `Showing ${d.total} files`;
+}
+
+/* ── Models ─────────────────────────────────────────────── */
+async function loadModels() {
+  const d   = await fetch("/api/summary").then(r=>r.json());
+  const cmp = d.model_comparison||{};
+  const best= d.best_model||"";
+  const ns  = Object.keys(cmp);
+  if(!ns.length) return;
+
+  const mkBar = (id, metric) => {
+    const old = Chart.getChart(id); if(old) old.destroy();
+    return new Chart(document.getElementById(id),{
+      type:"bar",
+      data:{labels:ns,datasets:[{label:metric,data:ns.map(n=>cmp[n][metric]||0),
+            backgroundColor:MCOLS,borderRadius:4}]},
+      options:{responsive:true,maintainAspectRatio:false,
+               plugins:{legend:{display:false}},
+               scales:{y:{beginAtZero:true,max:1}}}
+    });
+  };
+  F1C  = mkBar("ch-f1","f1");
+  AUCC = mkBar("ch-auc","roc_auc");
+
+  document.getElementById("model-tbody").innerHTML = ns.map(n=>{
+    const m=cmp[n], ib=n===best;
+    return `<tr class="${ib?"best-row":""}">
+      <td><b>${n}</b>${ib?" ★":""}</td>
+      <td>${(m.accuracy||0).toFixed(4)}</td><td>${(m.precision||0).toFixed(4)}</td>
+      <td>${(m.recall||0).toFixed(4)}</td><td><b>${(m.f1||0).toFixed(4)}</b></td>
+      <td>${(m.roc_auc||0).toFixed(4)}</td></tr>`;
+  }).join("");
+}
+
+/* ── Pipeline ───────────────────────────────────────────── */
+async function runPipeline() {
+  const path = document.getElementById("repo-path").value.trim();
+  if(!path){ alert("Enter a repo path"); return; }
+  const btn  = document.getElementById("run-btn");
+  btn.disabled=true; btn.textContent="Running…";
+  document.getElementById("pipe-log").textContent="Starting…";
+  await fetch("/api/run-pipeline",{
+    method:"POST", headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({repo_path:path})
+  });
+  const iv = setInterval(async()=>{
+    const d = await fetch("/api/pipeline-log").then(r=>r.json());
+    const box = document.getElementById("pipe-log");
+    box.innerHTML = d.log.map(l=>
+      l.startsWith("✓")?`<span class="log-ok">${l}</span>`:
+      l.startsWith("✗")?`<span class="log-err">${l}</span>`:l
+    ).join("\n");
+    box.scrollTop=box.scrollHeight;
+    document.getElementById("pipe-step").textContent = d.running?`⟳ ${d.step}`:"";
+    if(!d.running){
+      clearInterval(iv);
+      btn.disabled=false; btn.textContent="Run Analysis";
+      if(d.error) box.innerHTML+=`\n<span class="log-err">Error: ${d.error}</span>`;
+    }
+  }, 1500);
+}
+
+/* init */
+loadOverview();
+</script>
+</body>
+</html>
