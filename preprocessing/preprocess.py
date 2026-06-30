@@ -25,12 +25,14 @@ TARGET = "is_defect_prone"
 NUMERIC_FEATURES = [
     "total_commits","total_authors","total_churn","avg_churn","max_churn",
     "lines_added","lines_deleted","avg_loc","max_loc","min_loc","loc_var",
-    "avg_cc","sum_cc","defect_rate","churn_per_loc","add_del_ratio",
+    "avg_cc","sum_cc","churn_per_loc","add_del_ratio",
     "loc_range","cyclomatic_complexity","num_functions","num_classes",
     "comment_lines","blank_lines","code_lines","comment_ratio",
     "avg_func_complexity","max_nesting","long_methods",
     "complexity_per_loc","churn_density","author_diversity",
-    "defect_density","commit_frequency",
+    "commit_frequency","files_touched","directories_touched",
+    "extensions_touched","change_entropy","commit_hour",
+    "commit_weekday","message_length",
 ]
 
 META_COLS = ["filepath","filename","directory","file_ext","language",
@@ -38,18 +40,54 @@ META_COLS = ["filepath","filename","directory","file_ext","language",
 
 def oversample(X, y, rs=42):
     df = X.copy(); df[TARGET] = y.values
-    maj = df[df[TARGET]==0]; mn = df[df[TARGET]==1]
-    if len(mn)==0 or len(maj)==0 or len(maj)/max(len(mn),1) < 1.5:
+    counts = df[TARGET].value_counts()
+    if len(counts) < 2:
         return X, y
-    mn_up = resample(mn, replace=True, n_samples=len(maj), random_state=rs)
-    bal   = pd.concat([maj, mn_up]).sample(frac=1, random_state=rs).reset_index(drop=True)
+
+    majority_count = counts.max()
+    minority_count = counts.min()
+    if majority_count / max(minority_count, 1) < 1.5:
+        return X, y
+
+    parts = []
+    for klass, count in counts.items():
+        part = df[df[TARGET] == klass]
+        if count < majority_count:
+            part = resample(part, replace=True, n_samples=majority_count, random_state=rs)
+        parts.append(part)
+
+    bal = pd.concat(parts).sample(frac=1, random_state=rs).reset_index(drop=True)
     return bal.drop(columns=[TARGET]), bal[TARGET]
 
 def select_features(X_tr, y_tr, k=20):
     k = min(k, X_tr.shape[1])
+    if y_tr.nunique() < 2:
+        return list(X_tr.columns[:k])
     mi = set(X_tr.columns[SelectKBest(mutual_info_classif,k=k).fit(X_tr,y_tr).get_support()])
     fk = set(X_tr.columns[SelectKBest(f_classif,          k=k).fit(X_tr,y_tr).get_support()])
     return list(mi | fk)
+
+def safe_train_test_split(X, y, meta, test_size=0.2, rs=42):
+    counts = y.value_counts()
+    if len(counts) < 2:
+        print("  WARNING: Only one class found; using an unstratified split. Model quality metrics will be limited.")
+        return train_test_split(X, y, meta, test_size=test_size, random_state=rs)
+
+    if counts.min() >= 2:
+        return train_test_split(X, y, meta, test_size=test_size, stratify=y, random_state=rs)
+
+    rare_classes = counts[counts < 2].index
+    rare_idx = y[y.isin(rare_classes)].index
+    rest_idx = y[~y.isin(rare_classes)].index
+    rest_y = y.loc[rest_idx]
+    stratify = rest_y if rest_y.nunique() > 1 and rest_y.value_counts().min() >= 2 else None
+
+    train_idx, test_idx = train_test_split(
+        rest_idx, test_size=test_size, stratify=stratify, random_state=rs)
+    train_idx = list(train_idx) + list(rare_idx)
+
+    print("  WARNING: Least populated class has <2 rows; keeping singleton class(es) in train and splitting the rest.")
+    return X.loc[train_idx], X.loc[test_idx], y.loc[train_idx], y.loc[test_idx], meta.loc[train_idx], meta.loc[test_idx]
 
 def run(input_path, output_dir, test_size=0.2, k=20, rs=42):
     print(f"\n[Phase 3] Preprocessing  input={input_path}")
@@ -81,9 +119,9 @@ def run(input_path, output_dir, test_size=0.2, k=20, rs=42):
     print(f"  Rows / features : {X.shape}")
     print(f"  Class counts    : {y.value_counts().to_dict()}")
 
-    # Stratified split
-    X_tr,X_te,y_tr,y_te,m_tr,m_te = train_test_split(
-        X,y,meta, test_size=test_size, stratify=y, random_state=rs)
+    # Stratified split when possible; keep singleton classes in train.
+    X_tr,X_te,y_tr,y_te,m_tr,m_te = safe_train_test_split(
+        X, y, meta, test_size=test_size, rs=rs)
 
     # Oversample training set only
     ratio = y_tr.sum()/len(y_tr)

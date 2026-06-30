@@ -5,7 +5,7 @@
 data/
 
 # ML models / checkpoints
-models/
+data/models/
 
 # Python cache
 __pycache__/

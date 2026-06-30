@@ -24,6 +24,10 @@ from sklearn.metrics import (classification_report, roc_auc_score, f1_score,
                               precision_recall_curve, average_precision_score)
 from sklearn.inspection import permutation_importance
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from explainability.line_risk import generate_line_risk_report
+from research_store import register_experiment
+
 # ── Maintenance scoring ─────────────────────────────────────────────────────
 def maintenance_score(row):
     p   = float(row.get("defect_probability", 0))
@@ -40,7 +44,16 @@ def risk_label(s):
 
 # ── Plots ───────────────────────────────────────────────────────────────────
 def plot_pr(model, X_te, y_te, out):
-    yb = model.predict_proba(X_te)[:,1]
+    proba = model.predict_proba(X_te)
+    positive_index = list(model.classes_).index(1) if 1 in model.classes_ and proba.shape[1] > 1 else 0
+    yb = proba[:, positive_index]
+    if y_te.nunique() < 2:
+        fig,ax=plt.subplots(figsize=(6,5))
+        ax.text(0.5, 0.5, "PR curve unavailable: test set has one class",
+                ha="center", va="center", fontsize=12)
+        ax.set_axis_off()
+        plt.tight_layout(); plt.savefig(f"{out}/precision_recall.png",dpi=120); plt.close()
+        return
     prec,rec,_ = precision_recall_curve(y_te,yb)
     ap = average_precision_score(y_te,yb)
     fig,ax=plt.subplots(figsize=(6,5))
@@ -52,7 +65,7 @@ def plot_pr(model, X_te, y_te, out):
 
 def plot_perm_importance(model, X_te, y_te, out):
     print("  Computing permutation importance...")
-    pi = permutation_importance(model,X_te,y_te,n_repeats=10,random_state=42,n_jobs=-1)
+    pi = permutation_importance(model,X_te,y_te,n_repeats=10,random_state=42,n_jobs=1)
     idx = np.argsort(pi.importances_mean)[-20:]
     fig,ax=plt.subplots(figsize=(8,6))
     ax.barh([X_te.columns[i] for i in idx], pi.importances_mean[idx],
@@ -93,10 +106,13 @@ def html_report(results, pred_df, out):
             "<tr" + row_class + ">"
             "<td><b>" + n + "</b>" + star + "</td>"
             "<td>" + f"{m.get('accuracy',0):.4f}" + "</td>"
+            "<td>" + f"{m.get('balanced_accuracy',0):.4f}" + "</td>"
             "<td>" + f"{m.get('precision',0):.4f}" + "</td>"
             "<td>" + f"{m.get('recall',0):.4f}" + "</td>"
             "<td>" + f"{m.get('f1',0):.4f}" + "</td>"
-            "<td>" + f"{m.get('roc_auc',0):.4f}" + "</td></tr>"
+            "<td>" + f"{m.get('roc_auc',0):.4f}" + "</td>"
+            "<td>" + f"{m.get('pr_auc',0):.4f}" + "</td>"
+            "<td>" + f"{m.get('mcc',0):.4f}" + "</td></tr>"
         )
     rows = "".join(rows_list)
     html = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
@@ -120,11 +136,12 @@ def html_report(results, pred_df, out):
   <b>Best model:</b> {best} &nbsp;|&nbsp;
   <b>F1:</b> {bm.get('f1',0):.4f} &nbsp;|&nbsp;
   <b>ROC-AUC:</b> {bm.get('roc_auc',0):.4f} &nbsp;|&nbsp;
+  <b>MCC:</b> {bm.get('mcc',0):.4f} &nbsp;|&nbsp;
   <b>Files analysed:</b> {len(pred_df)}
 </div>
 <h2>Model Comparison</h2>
-<table><thead><tr><th>Model</th><th>Accuracy</th><th>Precision</th>
-<th>Recall</th><th>F1</th><th>ROC-AUC</th></tr></thead>
+<table><thead><tr><th>Model</th><th>Accuracy</th><th>Balanced Acc.</th><th>Precision</th>
+<th>Recall</th><th>F1</th><th>ROC-AUC</th><th>PR-AUC</th><th>MCC</th></tr></thead>
 <tbody>{rows}</tbody></table>
 <h2>Visualisations</h2>
 <div class="imgs">
@@ -140,7 +157,7 @@ def html_report(results, pred_df, out):
     with open(path,"w") as f: f.write(html)
     print(f"  HTML report     : {path}")
 
-def run(data_dir, model_dir):
+def run(data_dir, model_dir, repo_path=None, dataset_name=None, task_type="traditional_file"):
     print(f"\n[Phase 5] Evaluation  data_dir={data_dir}")
     print("-"*55)
 
@@ -155,13 +172,21 @@ def run(data_dir, model_dir):
     with open(f"{model_dir}/results.json") as f:
         results = json.load(f)
 
-    yb = model.predict_proba(X_te)[:,1]
+    proba = model.predict_proba(X_te)
+    if proba.shape[1] == 1:
+        positive_index = 0
+    else:
+        positive_index = list(model.classes_).index(1) if 1 in model.classes_ else 0
+    yb = proba[:, positive_index]
     yp = model.predict(X_te)
 
     print(f"  Best model      : {results.get('_best','?')}")
     print(f"  Test F1         : {f1_score(y_te,yp,zero_division=0):.4f}")
-    print(f"  ROC-AUC         : {roc_auc_score(y_te,yb):.4f}")
-    print(classification_report(y_te,yp,target_names=["Clean","Defect"]))
+    if y_te.nunique() > 1:
+        print(f"  ROC-AUC         : {roc_auc_score(y_te,yb):.4f}")
+    else:
+        print("  ROC-AUC         : n/a (test set has one class)")
+    print(classification_report(y_te,yp,labels=[0,1],target_names=["Clean","Defect"],zero_division=0))
 
     # Build predictions dataframe
     pred = meta.copy() if not meta.empty else pd.DataFrame()
@@ -188,12 +213,20 @@ def run(data_dir, model_dir):
     pred.to_csv(f"{data_dir}/predictions.csv", index=False)
     print(f"  Predictions CSV : {data_dir}/predictions.csv")
 
+    line_risk_path = f"{data_dir}/line_risks.json"
+    generate_line_risk_report(f"{data_dir}/predictions.csv", line_risk_path, repo_path=repo_path)
+    print(f"  Line risk JSON  : {line_risk_path}")
+
     # Risk summary
     rc = pred["risk_level"].value_counts()
     for lv in ["Critical","High","Medium","Low"]:
         print(f"    {lv:10s}: {rc.get(lv,0)} files")
 
     html_report(results, pred, data_dir)
+    exp = register_experiment(data_dir, model_dir, repo_path=repo_path,
+                              dataset_name=dataset_name, task_type=task_type)
+    if exp:
+        print(f"  Research run    : {exp['run_id']} ({exp['project_name']})")
     print("[Phase 5] Done.\n")
     return pred
 
@@ -201,5 +234,8 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--data-dir",  default="../data/")
     ap.add_argument("--model-dir", default="../data/models/")
+    ap.add_argument("--repo", default=None)
+    ap.add_argument("--dataset-name", default=None)
+    ap.add_argument("--task-type", default="traditional_file")
     a = ap.parse_args()
-    run(a.data_dir, a.model_dir)
+    run(a.data_dir, a.model_dir, a.repo, a.dataset_name, a.task_type)

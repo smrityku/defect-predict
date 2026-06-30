@@ -48,7 +48,7 @@ def run(repo, branch, max_files, fast, no_dashboard):
 
     banner("Phase 5 - Evaluation & Maintenance Scoring")
     from evaluation.evaluate import run as p5
-    p5(str(DATA_DIR), str(MODEL_DIR))
+    p5(str(DATA_DIR), str(MODEL_DIR), repo_path=repo)
 
     banner("Pipeline Complete!")
     print(f"  Predictions : {DATA_DIR / 'predictions.csv'}")

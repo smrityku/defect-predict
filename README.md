@@ -62,9 +62,35 @@ python app.py
 ## Outputs
 
 - `data/predictions.csv` — every file with defect probability, maintenance score, risk level
+- `data/line_risks.json` — risky line ranges, code proportion, and explanation reasons per file
+- `data/research/experiments.json` — stored project/model runs for thesis comparison
+- `data/research/experiments_summary.csv` — paper-friendly experiment summary table
 - `data/report.html` — full HTML report with all charts
 - `data/models/results.json` — model comparison metrics (F1, AUC, etc.)
 - `data/models/best_model.pkl` — best-performing serialised model
+
+## Research workflows
+
+```bash
+# Normalize a PROMISE/NASA-style CSV dataset into the local feature schema
+python datasets/load_public.py --input /path/to/dataset.csv \
+  --output data/features.csv --dataset-name KC1 --target-col defects
+
+# Extract commit-level JIT rows from a Git repository
+python collector/jit_extractor.py --repo /path/to/repo \
+  --output data/jit_features.csv --max-commits 1000
+
+# Train/evaluate a normalized public or JIT dataset
+python preprocessing/preprocess.py --input data/features.csv --output-dir data/
+python models/train_compare.py --data-dir data/ --model-dir data/models/ --fast
+python evaluation/evaluate.py --data-dir data/ --model-dir data/models/ \
+  --dataset-name KC1 --task-type traditional_file
+```
+
+Line-level explanations are heuristic localizations over the file-level model
+score. They identify suspicious code regions and explain why those lines were
+flagged; they should be reported as explanation support, not as independently
+supervised line-defect labels unless a line-labelled dataset is added.
 
 ## Supported languages
 

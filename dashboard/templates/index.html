@@ -101,6 +101,19 @@ input[type=text]{flex:1;min-width:180px}
 /* ── Img grid ────────────────────────────────────── */
 .img-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
 .img-grid img{width:100%;border-radius:8px;border:1px solid #E2E8F0}
+.btn-small{padding:5px 10px;border:1px solid #CBD5E0;border-radius:6px;
+           background:#fff;color:#2D3748;font-size:12px;font-weight:600;cursor:pointer}
+.btn-small:hover{border-color:#3182CE;color:#3182CE;background:#EBF8FF}
+.detail-empty{border:1px dashed #CBD5E0;border-radius:8px;padding:16px;color:#718096;background:#F7FAFC}
+.detail-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.detail-pill{display:inline-block;background:#EBF8FF;color:#2B6CB0;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700}
+.advice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin:12px 0}
+.advice{border:1px solid #E2E8F0;border-radius:8px;padding:12px;background:#F8FAFC}
+.advice b{display:block;margin-bottom:5px;color:#2D3748}
+.advice p{margin:5px 0;color:#4A5568;line-height:1.45;font-size:12px}
+.rubocop{display:inline-block;margin-top:6px;padding:2px 7px;border-radius:999px;background:#EDF2F7;color:#4A5568;font-size:11px}
+.code-cell{font-family:monospace;font-size:12px;white-space:normal;line-height:1.45}
+.cmd{font-family:monospace;background:#1A202C;color:#E2E8F0;border-radius:6px;padding:8px 10px;margin-top:6px;overflow-x:auto;font-size:12px}
 
 @media(max-width:720px){
   .sb{width:56px}.sb-brand,.nav-sec,.nav-item span{display:none}
@@ -120,6 +133,8 @@ input[type=text]{flex:1;min-width:180px}
     <span class="nav-icon">📁</span><span>File Risk Table</span></div>
   <div class="nav-item" onclick="go('models',this)">
     <span class="nav-icon">🤖</span><span>Model Comparison</span></div>
+  <div class="nav-item" onclick="go('research',this)">
+    <span class="nav-icon">🧪</span><span>Research Runs</span></div>
   <div class="nav-sec">Tools</div>
   <div class="nav-item" onclick="go('pipeline',this)">
     <span class="nav-icon">⚙️</span><span>Run Pipeline</span></div>
@@ -163,12 +178,16 @@ input[type=text]{flex:1;min-width:180px}
       <option>Medium</option><option>Low</option>
     </select>
   </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">Line-level explanation</div>
+    <div id="line-risk-detail" class="detail-empty">Click <b>Inspect</b> beside a file to view risky line ranges, code snippets, and why those lines were flagged.</div>
+  </div>
   <div class="card">
     <div class="tbl-wrap">
       <table>
         <thead><tr>
           <th>File</th><th>Language</th><th>Defect Prob.</th>
-          <th>Maint. Score</th><th>Risk</th>
+          <th>Risky Code</th><th>Top Lines</th><th>Maint. Score</th><th>Risk</th><th>Action</th>
         </tr></thead>
         <tbody id="files-tbody"></tbody>
       </table>
@@ -192,7 +211,7 @@ input[type=text]{flex:1;min-width:180px}
     <div class="tbl-wrap">
       <table><thead><tr>
         <th>Model</th><th>Accuracy</th><th>Precision</th>
-        <th>Recall</th><th>F1</th><th>ROC-AUC</th>
+        <th>Recall</th><th>F1</th><th>ROC-AUC</th><th>PR-AUC</th><th>MCC</th>
       </tr></thead>
       <tbody id="model-tbody"></tbody></table>
     </div>
@@ -204,6 +223,21 @@ input[type=text]{flex:1;min-width:180px}
       <img src="/model-images/roc_curves.png"       onerror="this.style.display='none'">
       <img src="/images/feature_importance.png"     onerror="this.style.display='none'">
       <img src="/images/maintenance_dist.png"        onerror="this.style.display='none'">
+    </div>
+  </div>
+</div>
+
+<!-- ── RESEARCH ───────────────────────────────────── -->
+<div id="page-research" class="page">
+  <div class="page-title">Research Runs</div>
+  <div class="page-sub">Stored project experiments for thesis comparison tables</div>
+  <div class="card">
+    <div class="tbl-wrap">
+      <table><thead><tr>
+        <th>Run</th><th>Project</th><th>Task</th><th>Records</th>
+        <th>Best Model</th><th>F1</th><th>MCC</th><th>PR-AUC</th>
+      </tr></thead>
+      <tbody id="research-tbody"></tbody></table>
     </div>
   </div>
 </div>
@@ -251,6 +285,7 @@ function go(page, el) {
   if(page==="overview") loadOverview();
   if(page==="files")    loadFiles();
   if(page==="models")   loadModels();
+  if(page==="research") loadResearch();
 }
 
 /* ── Overview ───────────────────────────────────────────── */
@@ -308,10 +343,10 @@ async function loadFiles() {
 
   const tb = document.getElementById("files-tbody");
   if(!d.files?.length) {
-    tb.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:40px;color:#718096">
+    tb.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:40px;color:#718096">
       No data yet — run the pipeline first.</td></tr>`; return;
   }
-  tb.innerHTML = d.files.map(f=>{
+  tb.innerHTML = d.files.map((f, idx)=>{
     const pct = Math.round((f.defect_probability||0)*100);
     return `<tr>
       <td title="${f.filepath}" style="font-family:monospace;font-size:12px">${f.filepath}</td>
@@ -319,11 +354,80 @@ async function loadFiles() {
       <td><div style="display:flex;align-items:center;gap:7px">
             <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
             <span>${pct}%</span></div></td>
+      <td>${(f.line_proportion_percent||0).toFixed(1)}%</td>
+      <td>${f.top_segment||"—"}</td>
       <td>${(f.maintenance_score||0).toFixed(1)}</td>
       <td><span class="badge b-${(f.risk_level||'low').toLowerCase()}">${f.risk_level||"—"}</span></td>
+      <td><button class="btn-small" onclick="event.stopPropagation(); loadLineRiskByIndex(${idx})">Inspect</button></td>
     </tr>`;
   }).join("");
+  [...tb.querySelectorAll("tr")].forEach((row, idx)=>{
+    row.style.cursor = "pointer";
+    row.onclick = () => loadLineRiskByIndex(idx);
+  });
+  window.__currentFiles = d.files;
   document.getElementById("files-count").textContent = `Showing ${d.total} files`;
+}
+
+function loadLineRiskByIndex(idx) {
+  const f = (window.__currentFiles || [])[idx];
+  if(f) loadLineRisk(f.filepath);
+}
+
+async function loadLineRisk(filepath) {
+  const box = document.getElementById("line-risk-detail");
+  box.innerHTML = "Loading...";
+  const d = await fetch(`/api/file-risk?filepath=${encodeURIComponent(filepath)}`).then(r=>r.json());
+  if(!d.available) {
+    box.className = "detail-empty";
+    box.innerHTML = `<b>${filepath}</b><br><span style="color:#A0AEC0">Source file was not available for line-level inspection. Re-run the pipeline with this repository path so the analyzer can read the source files.</span>`;
+    return;
+  }
+  box.className = "";
+  const segs = (d.segments||[]).map(s=>`
+    <tr><td>${s.line_range}</td><td>${Math.round((s.max_score||0)*100)}%</td>
+    <td>${(s.recommendations||[]).map(r=>`
+      <div style="margin-bottom:8px"><b>${escapeHtml(r.reason)}</b><br>
+      <span>${escapeHtml(r.suggested_change)}</span><br>
+      <span class="rubocop">${escapeHtml(r.rubocop_hint)}</span></div>`).join("")}</td></tr>`).join("");
+  const lines = (d.top_lines||[]).slice(0,10).map(l=>`
+    <tr><td>${l.line}</td><td>${l.risk_percent}%</td>
+    <td>${(l.issue_details||[]).map(i=>`
+      <div style="margin-bottom:8px"><b>${escapeHtml(i.reason)}</b><br>
+      <span>${escapeHtml(i.fix)}</span><br>
+      <span class="rubocop">${escapeHtml(i.rubocop)}</span></div>`).join("")}</td>
+    <td class="code-cell">${escapeHtml(l.code||"")}</td></tr>`).join("");
+  const recs = (d.recommendations||[]).map(r=>`
+    <div class="advice">
+      <b>${escapeHtml(r.reason)} (${r.occurrences})</b>
+      <p><b style="display:inline">Why it matters:</b> ${escapeHtml(r.impact)}</p>
+      <p><b style="display:inline">Suggested change:</b> ${escapeHtml(r.suggested_change)}</p>
+      <span class="rubocop">${escapeHtml(r.rubocop_hint)}</span>
+    </div>`).join("");
+  const cmds = (d.suggested_commands||[]).map(c=>`
+    <div class="advice"><b>${escapeHtml(c.label)}</b><div class="cmd">${escapeHtml(c.command)}</div></div>`).join("");
+  box.innerHTML = `
+    <div class="detail-head">
+      <div><b>${filepath}</b><br>
+        <span style="color:#4A5568">${d.line_proportion_percent||0}% of code lines are flagged as risky candidates.</span></div>
+      <span class="detail-pill">${d.risky_lines||0}/${d.code_lines||0} risky lines</span>
+    </div>
+    <div class="card-title">Developer fix suggestions</div>
+    <div class="advice-grid">${recs || '<div class="detail-empty">No specific suggestions available.</div>'}</div>
+    <div class="card-title">Suggested local checks</div>
+    <div class="advice-grid">${cmds || '<div class="detail-empty">No commands available for this file type.</div>'}</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Line range</th><th>Risk</th><th>Suggested changes</th></tr></thead>
+      <tbody>${segs || '<tr><td colspan="3">No risky ranges detected.</td></tr>'}</tbody>
+    </table></div>
+    <div class="tbl-wrap" style="margin-top:12px"><table>
+      <thead><tr><th>Line</th><th>Risk</th><th>How to fix</th><th>Code</th></tr></thead>
+      <tbody>${lines || '<tr><td colspan="4">No line details available.</td></tr>'}</tbody>
+    </table></div>`;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 }
 
 /* ── Models ─────────────────────────────────────────────── */
@@ -354,8 +458,23 @@ async function loadModels() {
       <td><b>${n}</b>${ib?" ★":""}</td>
       <td>${(m.accuracy||0).toFixed(4)}</td><td>${(m.precision||0).toFixed(4)}</td>
       <td>${(m.recall||0).toFixed(4)}</td><td><b>${(m.f1||0).toFixed(4)}</b></td>
-      <td>${(m.roc_auc||0).toFixed(4)}</td></tr>`;
+      <td>${(m.roc_auc||0).toFixed(4)}</td><td>${(m.pr_auc||0).toFixed(4)}</td>
+      <td>${(m.mcc||0).toFixed(4)}</td></tr>`;
   }).join("");
+}
+
+async function loadResearch() {
+  const d = await fetch("/api/research-runs").then(r=>r.json());
+  const rows = d.experiments || [];
+  document.getElementById("research-tbody").innerHTML = rows.slice().reverse().map(r=>{
+    const m = r.best_metrics || {};
+    return `<tr>
+      <td>${r.run_id}</td><td>${r.project_name}</td><td>${r.task_type}</td>
+      <td>${r.files_or_records}</td><td>${r.best_model}</td>
+      <td>${(m.f1||0).toFixed(4)}</td><td>${(m.mcc||0).toFixed(4)}</td>
+      <td>${(m.pr_auc||0).toFixed(4)}</td>
+    </tr>`;
+  }).join("") || `<tr><td colspan="8" style="text-align:center;padding:32px;color:#718096">No research runs stored yet.</td></tr>`;
 }
 
 /* ── Pipeline ───────────────────────────────────────────── */

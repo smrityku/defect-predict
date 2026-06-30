@@ -28,6 +28,14 @@ def load_results():
     p = MODEL_DIR / "results.json"
     return json.load(open(p)) if p.exists() else {}
 
+def load_line_risks():
+    p = DATA_DIR / "line_risks.json"
+    return json.load(open(p)) if p.exists() else []
+
+def load_research_runs():
+    p = DATA_DIR / "research" / "experiments.json"
+    return json.load(open(p)) if p.exists() else []
+
 # ── pages ────────────────────────────────────────────────────────────────────
 @app.route("/")
 def index(): return render_template("index.html")
@@ -58,8 +66,26 @@ def predictions():
     cols = ["filepath","language","defect_probability",
             "maintenance_score","risk_level","predicted_defect","actual_defect"]
     cols = [c for c in cols if c in df.columns]
-    return jsonify({"files": df[cols].fillna("").to_dict(orient="records"),
+    files = df[cols].fillna("").to_dict(orient="records")
+    line_map = {r.get("filepath"): r for r in load_line_risks()}
+    for item in files:
+        lr = line_map.get(item.get("filepath"), {})
+        item["line_proportion_percent"] = lr.get("line_proportion_percent", 0)
+        item["top_segment"] = (lr.get("segments") or [{}])[0].get("line_range", "")
+    return jsonify({"files": files,
                     "total": len(df)})
+
+@app.route("/api/file-risk")
+def file_risk():
+    filepath = request.args.get("filepath", "")
+    for item in load_line_risks():
+        if item.get("filepath") == filepath:
+            return jsonify(item)
+    return jsonify({"filepath": filepath, "available": False, "segments": [], "top_lines": []}), 404
+
+@app.route("/api/research-runs")
+def research_runs():
+    return jsonify({"experiments": load_research_runs()})
 
 @app.route("/api/summary")
 def summary():
@@ -82,11 +108,11 @@ def summary():
         "language_counts": lang_c,
         "best_model": best,
         "best_metrics": {k:v for k,v in bm.items()
-                         if k in ("accuracy","precision","recall","f1","roc_auc")},
+                         if k in ("accuracy","balanced_accuracy","precision","recall","f1","roc_auc","pr_auc","mcc")},
         "top_files": top5,
         "model_comparison": {
             n:{k:v for k,v in m.items()
-               if k in ("accuracy","precision","recall","f1","roc_auc")}
+               if k in ("accuracy","balanced_accuracy","precision","recall","f1","roc_auc","pr_auc","mcc")}
             for n,m in res.items() if not n.startswith("_")
         },
     })
@@ -123,7 +149,8 @@ def run_pipeline():
             ("Evaluating", [
                 sys.executable, str(BASE/"evaluation"/"evaluate.py"),
                 "--data-dir", str(DATA_DIR),
-                "--model-dir", str(MODEL_DIR)]),
+                "--model-dir", str(MODEL_DIR),
+                "--repo", repo_path]),
         ]
         for name, cmd in steps:
             _pipe["step"] = name
