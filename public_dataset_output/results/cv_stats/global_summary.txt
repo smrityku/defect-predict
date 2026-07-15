@@ -1,0 +1,12 @@
+DefectInsight Global Statistical Summary
+============================================
+Metric: f1
+
+Model ranking:
+- Logistic Regression: mean=0.3759, std=0.1401, datasets=13
+- Random Forest: mean=0.3651, std=0.1618, datasets=13
+- SVM: mean=0.1987, std=0.1617, datasets=13
+
+Friedman: statistic=19.5385, p=0.000057
+
+Pairwise Wilcoxon and effect sizes are saved in global_pairwise_tests.csv.

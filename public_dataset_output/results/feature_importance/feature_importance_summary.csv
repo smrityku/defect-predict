@@ -1,0 +1,40 @@
+dataset,model,output,notes
+ar1,Random Forest,public_dataset_output/results/feature_importance/ar1/random_forest,SHAP skipped: shap is not installed.
+ar1,SVM,public_dataset_output/results/feature_importance/ar1/svm,
+ar1,Logistic Regression,public_dataset_output/results/feature_importance/ar1/logistic_regression,
+ar3,Random Forest,public_dataset_output/results/feature_importance/ar3/random_forest,SHAP skipped: shap is not installed.
+ar3,SVM,public_dataset_output/results/feature_importance/ar3/svm,
+ar3,Logistic Regression,public_dataset_output/results/feature_importance/ar3/logistic_regression,
+ar4,Random Forest,public_dataset_output/results/feature_importance/ar4/random_forest,SHAP skipped: shap is not installed.
+ar4,SVM,public_dataset_output/results/feature_importance/ar4/svm,
+ar4,Logistic Regression,public_dataset_output/results/feature_importance/ar4/logistic_regression,
+ar5,Random Forest,public_dataset_output/results/feature_importance/ar5/random_forest,SHAP skipped: shap is not installed.
+ar5,SVM,public_dataset_output/results/feature_importance/ar5/svm,
+ar5,Logistic Regression,public_dataset_output/results/feature_importance/ar5/logistic_regression,
+ar6,Random Forest,public_dataset_output/results/feature_importance/ar6/random_forest,SHAP skipped: shap is not installed.
+ar6,SVM,public_dataset_output/results/feature_importance/ar6/svm,
+ar6,Logistic Regression,public_dataset_output/results/feature_importance/ar6/logistic_regression,
+kc1,Random Forest,public_dataset_output/results/feature_importance/kc1/random_forest,SHAP skipped: shap is not installed.
+kc1,SVM,public_dataset_output/results/feature_importance/kc1/svm,
+kc1,Logistic Regression,public_dataset_output/results/feature_importance/kc1/logistic_regression,
+kc2,Random Forest,public_dataset_output/results/feature_importance/kc2/random_forest,SHAP skipped: shap is not installed.
+kc2,SVM,public_dataset_output/results/feature_importance/kc2/svm,
+kc2,Logistic Regression,public_dataset_output/results/feature_importance/kc2/logistic_regression,
+kc3,Random Forest,public_dataset_output/results/feature_importance/kc3/random_forest,SHAP skipped: shap is not installed.
+kc3,SVM,public_dataset_output/results/feature_importance/kc3/svm,
+kc3,Logistic Regression,public_dataset_output/results/feature_importance/kc3/logistic_regression,
+mc2,Random Forest,public_dataset_output/results/feature_importance/mc2/random_forest,SHAP skipped: shap is not installed.
+mc2,SVM,public_dataset_output/results/feature_importance/mc2/svm,
+mc2,Logistic Regression,public_dataset_output/results/feature_importance/mc2/logistic_regression,
+mw1,Random Forest,public_dataset_output/results/feature_importance/mw1/random_forest,SHAP skipped: shap is not installed.
+mw1,SVM,public_dataset_output/results/feature_importance/mw1/svm,
+mw1,Logistic Regression,public_dataset_output/results/feature_importance/mw1/logistic_regression,
+pc1,Random Forest,public_dataset_output/results/feature_importance/pc1/random_forest,SHAP skipped: shap is not installed.
+pc1,SVM,public_dataset_output/results/feature_importance/pc1/svm,
+pc1,Logistic Regression,public_dataset_output/results/feature_importance/pc1/logistic_regression,
+pc3,Random Forest,public_dataset_output/results/feature_importance/pc3/random_forest,SHAP skipped: shap is not installed.
+pc3,SVM,public_dataset_output/results/feature_importance/pc3/svm,
+pc3,Logistic Regression,public_dataset_output/results/feature_importance/pc3/logistic_regression,
+pc4,Random Forest,public_dataset_output/results/feature_importance/pc4/random_forest,SHAP skipped: shap is not installed.
+pc4,SVM,public_dataset_output/results/feature_importance/pc4/svm,
+pc4,Logistic Regression,public_dataset_output/results/feature_importance/pc4/logistic_regression,

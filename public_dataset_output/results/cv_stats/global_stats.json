@@ -1,0 +1,28 @@
+{
+  "metric": "f1",
+  "datasets": [
+    "ar1",
+    "ar3",
+    "ar4",
+    "ar5",
+    "ar6",
+    "kc1",
+    "kc2",
+    "kc3",
+    "mc2",
+    "mw1",
+    "pc1",
+    "pc3",
+    "pc4"
+  ],
+  "models": [
+    "Logistic Regression",
+    "Random Forest",
+    "SVM"
+  ],
+  "friedman": {
+    "statistic": 19.538461538461547,
+    "p_value": 5.718432307658737e-05
+  },
+  "nemenyi": "skipped: scikit-posthocs is not installed"
+}

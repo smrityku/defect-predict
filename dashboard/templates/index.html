@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DefectPredict</title>
+<title>DefectInsight</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -104,6 +104,10 @@ input[type=text]{flex:1;min-width:180px}
 .btn-small{padding:5px 10px;border:1px solid #CBD5E0;border-radius:6px;
            background:#fff;color:#2D3748;font-size:12px;font-weight:600;cursor:pointer}
 .btn-small:hover{border-color:#3182CE;color:#3182CE;background:#EBF8FF}
+.back-btn{display:inline-flex;align-items:center;gap:7px;margin-bottom:14px;
+          padding:7px 12px;border:1px solid #CBD5E0;border-radius:7px;
+          background:#fff;color:#2D3748;font-size:13px;font-weight:600;cursor:pointer}
+.back-btn:hover{border-color:#3182CE;color:#3182CE;background:#EBF8FF}
 .detail-empty{border:1px dashed #CBD5E0;border-radius:8px;padding:16px;color:#718096;background:#F7FAFC}
 .detail-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
 .detail-pill{display:inline-block;background:#EBF8FF;color:#2B6CB0;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700}
@@ -125,7 +129,7 @@ input[type=text]{flex:1;min-width:180px}
 
 <!-- Sidebar -->
 <nav class="sb">
-  <div class="sb-brand">Defect<span>Predict</span></div>
+  <div class="sb-brand">Defect<span>Insight</span></div>
   <div class="nav-sec">Analysis</div>
   <div class="nav-item active" onclick="go('overview',this)">
     <span class="nav-icon">📊</span><span>Overview</span></div>
@@ -178,10 +182,6 @@ input[type=text]{flex:1;min-width:180px}
       <option>Medium</option><option>Low</option>
     </select>
   </div>
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-title">Line-level explanation</div>
-    <div id="line-risk-detail" class="detail-empty">Click <b>Inspect</b> beside a file to view risky line ranges, code snippets, and why those lines were flagged.</div>
-  </div>
   <div class="card">
     <div class="tbl-wrap">
       <table>
@@ -193,6 +193,17 @@ input[type=text]{flex:1;min-width:180px}
       </table>
     </div>
     <div id="files-count" style="color:#718096;font-size:12px;margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- ── INSPECT ───────────────────────────────────── -->
+<div id="page-inspect" class="page">
+  <button class="back-btn" onclick="backToFiles()">← Previous page</button>
+  <div class="page-title">Inspect Risky Code</div>
+  <div class="page-sub">Line ranges, developer fix suggestions, local checks, and code snippets</div>
+  <div class="card">
+    <div class="card-title">Line-level explanation</div>
+    <div id="line-risk-detail" class="detail-empty">Select a file from the File Risk Table to inspect risky line ranges.</div>
   </div>
 </div>
 
@@ -272,16 +283,22 @@ input[type=text]{flex:1;min-width:180px}
 <script>
 /* ── Shared charts ─────────────────────────────────────── */
 let RC=null, LC=null, F1C=null, AUCC=null;
+let LAST_PAGE = "files";
 
 const COLORS = ["#E53E3E","#DD6B20","#D69E2E","#38A169"];
 const MCOLS  = ["#3182CE","#38A169","#DD6B20","#805AD5"];
 
 /* ── Navigation ─────────────────────────────────────────── */
-function go(page, el) {
+function go(page, el=null) {
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
   document.getElementById("page-"+page).classList.add("active");
-  el.classList.add("active");
+  if(el) el.classList.add("active");
+  if(!el && page !== "inspect") {
+    const nav = [...document.querySelectorAll(".nav-item")]
+      .find(n => n.getAttribute("onclick")?.includes(`'${page}'`));
+    if(nav) nav.classList.add("active");
+  }
   if(page==="overview") loadOverview();
   if(page==="files")    loadFiles();
   if(page==="models")   loadModels();
@@ -358,20 +375,28 @@ async function loadFiles() {
       <td>${f.top_segment||"—"}</td>
       <td>${(f.maintenance_score||0).toFixed(1)}</td>
       <td><span class="badge b-${(f.risk_level||'low').toLowerCase()}">${f.risk_level||"—"}</span></td>
-      <td><button class="btn-small" onclick="event.stopPropagation(); loadLineRiskByIndex(${idx})">Inspect</button></td>
+      <td><button class="btn-small" onclick="event.stopPropagation(); openInspectByIndex(${idx})">Inspect</button></td>
     </tr>`;
   }).join("");
   [...tb.querySelectorAll("tr")].forEach((row, idx)=>{
     row.style.cursor = "pointer";
-    row.onclick = () => loadLineRiskByIndex(idx);
+    row.onclick = () => openInspectByIndex(idx);
   });
   window.__currentFiles = d.files;
   document.getElementById("files-count").textContent = `Showing ${d.total} files`;
 }
 
-function loadLineRiskByIndex(idx) {
+function openInspectByIndex(idx) {
   const f = (window.__currentFiles || [])[idx];
-  if(f) loadLineRisk(f.filepath);
+  if(f) {
+    LAST_PAGE = "files";
+    go("inspect");
+    loadLineRisk(f.filepath);
+  }
+}
+
+function backToFiles() {
+  go(LAST_PAGE || "files");
 }
 
 async function loadLineRisk(filepath) {

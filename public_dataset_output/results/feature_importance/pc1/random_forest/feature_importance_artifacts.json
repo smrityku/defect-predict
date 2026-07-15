@@ -1,0 +1,7 @@
+{
+  "Random Forest": {
+    "importance": "public_dataset_output/results/feature_importance/pc1/random_forest/random_forest.csv",
+    "plot": "public_dataset_output/results/feature_importance/pc1/random_forest/random_forest.png",
+    "source": "feature_importances"
+  }
+}

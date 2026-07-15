@@ -25,7 +25,7 @@ def run(repo, branch, max_files, fast, no_dashboard):
     DATA_DIR.mkdir(exist_ok=True)
     MODEL_DIR.mkdir(exist_ok=True)
 
-    banner("DefectPredict - Full Pipeline")
+    banner("DefectInsight - Full Pipeline")
     print(f"  Repo      : {repo}")
     print(f"  Branch    : {branch}")
     print(f"  Max files : {max_files or 'all'}")

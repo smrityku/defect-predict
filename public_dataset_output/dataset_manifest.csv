@@ -1,0 +1,14 @@
+dataset,rows,columns,target_column,class_counts,csv_path,openml_dataset_id,openml_file_id,download_url,source
+ar1,121,30,defects,"{'false': 112, 'true': 9}",public_dataset_output/raw_csv/ar1.csv,1059,53942,https://www.openml.org/data/v1/download/53942,OpenML / PROMISE NASA MDP AR1
+ar3,63,30,defects,"{'false': 55, 'true': 8}",public_dataset_output/raw_csv/ar3.csv,1060,53943,https://www.openml.org/data/v1/download/53943,OpenML / PROMISE NASA MDP AR3
+ar4,107,30,defects,"{'false': 87, 'true': 20}",public_dataset_output/raw_csv/ar4.csv,1061,53944,https://www.openml.org/data/v1/download/53944,OpenML / PROMISE NASA MDP AR4
+ar5,36,30,defects,"{'false': 28, 'true': 8}",public_dataset_output/raw_csv/ar5.csv,1062,53945,https://www.openml.org/data/v1/download/53945,OpenML / PROMISE NASA MDP AR5
+ar6,101,30,defects,"{'false': 86, 'true': 15}",public_dataset_output/raw_csv/ar6.csv,1064,53947,https://www.openml.org/data/v1/download/53947,OpenML / PROMISE NASA MDP AR6
+kc1,2109,22,defects,"{'false': 1783, 'true': 326}",public_dataset_output/raw_csv/kc1.csv,1067,53950,https://www.openml.org/data/v1/download/53950,OpenML / PROMISE NASA MDP KC1
+kc2,522,22,problems,"{'no': 415, 'yes': 107}",public_dataset_output/raw_csv/kc2.csv,1063,53946,https://www.openml.org/data/v1/download/53946,OpenML / PROMISE NASA MDP KC2
+kc3,458,40,c,"{'FALSE': 415, 'TRUE': 43}",public_dataset_output/raw_csv/kc3.csv,1065,53948,https://www.openml.org/data/v1/download/53948,OpenML / PROMISE NASA MDP KC3
+mc2,161,40,c,"{'FALSE': 109, 'TRUE': 52}",public_dataset_output/raw_csv/mc2.csv,1054,53937,https://www.openml.org/data/v1/download/53937,OpenML / PROMISE NASA MDP MC2
+mw1,403,38,c,"{'FALSE': 372, 'TRUE': 31}",public_dataset_output/raw_csv/mw1.csv,1071,53954,https://www.openml.org/data/v1/download/53954,OpenML / PROMISE NASA MDP MW1
+pc1,1109,22,defects,"{'false': 1032, 'true': 77}",public_dataset_output/raw_csv/pc1.csv,1068,53951,https://www.openml.org/data/v1/download/53951,OpenML / PROMISE NASA MDP PC1
+pc3,1563,38,c,"{'FALSE': 1403, 'TRUE': 160}",public_dataset_output/raw_csv/pc3.csv,1050,53933,https://www.openml.org/data/v1/download/53933,OpenML / PROMISE NASA MDP PC3
+pc4,1458,38,c,"{'FALSE': 1280, 'TRUE': 178}",public_dataset_output/raw_csv/pc4.csv,1049,53932,https://www.openml.org/data/v1/download/53932,OpenML / PROMISE NASA MDP PC4

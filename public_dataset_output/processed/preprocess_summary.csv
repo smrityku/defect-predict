@@ -1,0 +1,14 @@
+dataset,input,output,csv_output,rows,features,defect_rate
+ar1,public_dataset_output/raw_csv/ar1.csv,public_dataset_output/processed/ar1.pkl,public_dataset_output/processed/ar1.csv,121,69,0.0743801652892562
+ar3,public_dataset_output/raw_csv/ar3.csv,public_dataset_output/processed/ar3.pkl,public_dataset_output/processed/ar3.csv,63,69,0.12698412698412698
+ar4,public_dataset_output/raw_csv/ar4.csv,public_dataset_output/processed/ar4.pkl,public_dataset_output/processed/ar4.csv,107,69,0.18691588785046728
+ar5,public_dataset_output/raw_csv/ar5.csv,public_dataset_output/processed/ar5.pkl,public_dataset_output/processed/ar5.csv,36,69,0.2222222222222222
+ar6,public_dataset_output/raw_csv/ar6.csv,public_dataset_output/processed/ar6.pkl,public_dataset_output/processed/ar6.csv,101,69,0.1485148514851485
+kc1,public_dataset_output/raw_csv/kc1.csv,public_dataset_output/processed/kc1.pkl,public_dataset_output/processed/kc1.csv,2109,62,0.15457562825983878
+kc2,public_dataset_output/raw_csv/kc2.csv,public_dataset_output/processed/kc2.pkl,public_dataset_output/processed/kc2.csv,522,62,0.2049808429118774
+kc3,public_dataset_output/raw_csv/kc3.csv,public_dataset_output/processed/kc3.pkl,public_dataset_output/processed/kc3.csv,458,80,0.09388646288209607
+mc2,public_dataset_output/raw_csv/mc2.csv,public_dataset_output/processed/mc2.pkl,public_dataset_output/processed/mc2.csv,161,80,0.32298136645962733
+mw1,public_dataset_output/raw_csv/mw1.csv,public_dataset_output/processed/mw1.pkl,public_dataset_output/processed/mw1.csv,403,78,0.07692307692307693
+pc1,public_dataset_output/raw_csv/pc1.csv,public_dataset_output/processed/pc1.pkl,public_dataset_output/processed/pc1.csv,1109,62,0.06943192064923355
+pc3,public_dataset_output/raw_csv/pc3.csv,public_dataset_output/processed/pc3.pkl,public_dataset_output/processed/pc3.csv,1563,78,0.10236724248240563
+pc4,public_dataset_output/raw_csv/pc4.csv,public_dataset_output/processed/pc4.pkl,public_dataset_output/processed/pc4.csv,1458,78,0.12208504801097393

@@ -3,6 +3,24 @@
 
 # Data / generated artifacts
 data/
+results/**
+!results/
+!results/.gitkeep
+!results/cv_stats/
+!results/cv_stats/.gitkeep
+!results/cv_results/
+!results/cv_results/.gitkeep
+!results/feature_importance/
+!results/feature_importance/.gitkeep
+!results/confusion_matrices/
+!results/confusion_matrices/.gitkeep
+!results/cross_dataset/
+!results/cross_dataset/.gitkeep
+!results/learning_curves/
+!results/learning_curves/.gitkeep
+reports/**
+!reports/
+!reports/.gitkeep
 
 # ML models / checkpoints
 data/models/

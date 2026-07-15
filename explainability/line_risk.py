@@ -170,8 +170,18 @@ def _merge_segments(line_scores, threshold=0.35, max_gap=1):
 
 
 def analyze_file(repo_path, filepath, defect_probability=0.0, maintenance_score=0.0):
+    if not repo_path:
+        return {
+            "filepath": filepath,
+            "available": False,
+            "error": "source file not available",
+            "line_proportion": 0.0,
+            "segments": [],
+            "top_lines": [],
+        }
+
     full_path = Path(repo_path) / filepath
-    if not repo_path or not full_path.is_file():
+    if not full_path.is_file():
         return {
             "filepath": filepath,
             "available": False,

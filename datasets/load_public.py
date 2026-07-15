@@ -14,11 +14,12 @@ import pandas as pd
 
 TARGET_ALIASES = [
     "is_defect_prone", "defective", "bug", "bugs", "defects", "fault",
-    "faults", "label", "target", "buggy", "contains_bug", "is_buggy",
+    "faults", "label", "target", "defect_label", "buggy", "contains_bug",
+    "is_buggy", "problems", "c",
 ]
 
 META_ALIASES = {
-    "filepath": ["filepath", "file", "filename", "path", "module", "class"],
+    "filepath": ["filepath", "file", "file_name", "filename", "path", "module", "class"],
     "language": ["language", "lang"],
     "commit_hash": ["commit_hash", "hash", "revision", "commit"],
     "project": ["project", "project_name", "repo", "repository"],
@@ -40,8 +41,7 @@ def _binary_target(series):
     return values.isin(["1", "true", "yes", "y", "bug", "buggy", "defect", "defective", "faulty"]).astype(int)
 
 
-def normalize(input_csv, output_csv, dataset_name=None, task_type="traditional_file", target_col=None):
-    df = pd.read_csv(input_csv)
+def normalize_frame(df, dataset_name=None, task_type="traditional_file", target_col=None):
     target_col = target_col or _find_col(df.columns, TARGET_ALIASES)
     if not target_col:
         raise ValueError("Could not find target column. Pass --target-col explicitly.")
@@ -66,6 +66,7 @@ def normalize(input_csv, output_csv, dataset_name=None, task_type="traditional_f
         out["language"] = "Unknown"
 
     ignore = {target_col}
+    ignore.update(c for c in df.columns if c.lower() in {alias.lower() for alias in TARGET_ALIASES})
     ignore.update(c for aliases in META_ALIASES.values() for c in aliases)
     numeric_cols = [
         c for c in df.columns
@@ -91,8 +92,20 @@ def normalize(input_csv, output_csv, dataset_name=None, task_type="traditional_f
         if col not in out.columns:
             out[col] = value
 
-    out["dataset_name"] = dataset_name or Path(input_csv).stem
+    out["dataset_name"] = dataset_name or "public_dataset"
     out["task_type"] = task_type
+
+    return out
+
+
+def normalize(input_csv, output_csv, dataset_name=None, task_type="traditional_file", target_col=None):
+    df = pd.read_csv(input_csv)
+    out = normalize_frame(
+        df,
+        dataset_name=dataset_name or Path(input_csv).stem,
+        task_type=task_type,
+        target_col=target_col,
+    )
 
     os.makedirs(os.path.dirname(os.path.abspath(output_csv)), exist_ok=True)
     out.to_csv(output_csv, index=False)
@@ -111,4 +124,3 @@ if __name__ == "__main__":
     ap.add_argument("--target-col", default=None)
     args = ap.parse_args()
     normalize(args.input, args.output, args.dataset_name, args.task_type, args.target_col)
-

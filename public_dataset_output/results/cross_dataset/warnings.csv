@@ -1,0 +1,211 @@
+train_dataset,test_dataset,model,reason
+kc1,ar1,Random Forest,No feature in X meets the variance threshold 0.00000
+kc1,ar1,SVM,No feature in X meets the variance threshold 0.00000
+kc1,ar1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc2,ar1,Random Forest,No feature in X meets the variance threshold 0.00000
+kc2,ar1,SVM,No feature in X meets the variance threshold 0.00000
+kc2,ar1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc3,ar1,Random Forest,No feature in X meets the variance threshold 0.00000
+kc3,ar1,SVM,No feature in X meets the variance threshold 0.00000
+kc3,ar1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mc2,ar1,Random Forest,No feature in X meets the variance threshold 0.00000
+mc2,ar1,SVM,No feature in X meets the variance threshold 0.00000
+mc2,ar1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mw1,ar1,Random Forest,No feature in X meets the variance threshold 0.00000
+mw1,ar1,SVM,No feature in X meets the variance threshold 0.00000
+mw1,ar1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc1,ar1,Random Forest,No feature in X meets the variance threshold 0.00000
+pc1,ar1,SVM,No feature in X meets the variance threshold 0.00000
+pc1,ar1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc3,ar1,Random Forest,No feature in X meets the variance threshold 0.00000
+pc3,ar1,SVM,No feature in X meets the variance threshold 0.00000
+pc3,ar1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc4,ar1,Random Forest,No feature in X meets the variance threshold 0.00000
+pc4,ar1,SVM,No feature in X meets the variance threshold 0.00000
+pc4,ar1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc1,ar3,Random Forest,No feature in X meets the variance threshold 0.00000
+kc1,ar3,SVM,No feature in X meets the variance threshold 0.00000
+kc1,ar3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc2,ar3,Random Forest,No feature in X meets the variance threshold 0.00000
+kc2,ar3,SVM,No feature in X meets the variance threshold 0.00000
+kc2,ar3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc3,ar3,Random Forest,No feature in X meets the variance threshold 0.00000
+kc3,ar3,SVM,No feature in X meets the variance threshold 0.00000
+kc3,ar3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mc2,ar3,Random Forest,No feature in X meets the variance threshold 0.00000
+mc2,ar3,SVM,No feature in X meets the variance threshold 0.00000
+mc2,ar3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mw1,ar3,Random Forest,No feature in X meets the variance threshold 0.00000
+mw1,ar3,SVM,No feature in X meets the variance threshold 0.00000
+mw1,ar3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc1,ar3,Random Forest,No feature in X meets the variance threshold 0.00000
+pc1,ar3,SVM,No feature in X meets the variance threshold 0.00000
+pc1,ar3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc3,ar3,Random Forest,No feature in X meets the variance threshold 0.00000
+pc3,ar3,SVM,No feature in X meets the variance threshold 0.00000
+pc3,ar3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc4,ar3,Random Forest,No feature in X meets the variance threshold 0.00000
+pc4,ar3,SVM,No feature in X meets the variance threshold 0.00000
+pc4,ar3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc1,ar4,Random Forest,No feature in X meets the variance threshold 0.00000
+kc1,ar4,SVM,No feature in X meets the variance threshold 0.00000
+kc1,ar4,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc2,ar4,Random Forest,No feature in X meets the variance threshold 0.00000
+kc2,ar4,SVM,No feature in X meets the variance threshold 0.00000
+kc2,ar4,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc3,ar4,Random Forest,No feature in X meets the variance threshold 0.00000
+kc3,ar4,SVM,No feature in X meets the variance threshold 0.00000
+kc3,ar4,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mc2,ar4,Random Forest,No feature in X meets the variance threshold 0.00000
+mc2,ar4,SVM,No feature in X meets the variance threshold 0.00000
+mc2,ar4,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mw1,ar4,Random Forest,No feature in X meets the variance threshold 0.00000
+mw1,ar4,SVM,No feature in X meets the variance threshold 0.00000
+mw1,ar4,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc1,ar4,Random Forest,No feature in X meets the variance threshold 0.00000
+pc1,ar4,SVM,No feature in X meets the variance threshold 0.00000
+pc1,ar4,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc3,ar4,Random Forest,No feature in X meets the variance threshold 0.00000
+pc3,ar4,SVM,No feature in X meets the variance threshold 0.00000
+pc3,ar4,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc4,ar4,Random Forest,No feature in X meets the variance threshold 0.00000
+pc4,ar4,SVM,No feature in X meets the variance threshold 0.00000
+pc4,ar4,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc1,ar5,Random Forest,No feature in X meets the variance threshold 0.00000
+kc1,ar5,SVM,No feature in X meets the variance threshold 0.00000
+kc1,ar5,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc2,ar5,Random Forest,No feature in X meets the variance threshold 0.00000
+kc2,ar5,SVM,No feature in X meets the variance threshold 0.00000
+kc2,ar5,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc3,ar5,Random Forest,No feature in X meets the variance threshold 0.00000
+kc3,ar5,SVM,No feature in X meets the variance threshold 0.00000
+kc3,ar5,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mc2,ar5,Random Forest,No feature in X meets the variance threshold 0.00000
+mc2,ar5,SVM,No feature in X meets the variance threshold 0.00000
+mc2,ar5,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mw1,ar5,Random Forest,No feature in X meets the variance threshold 0.00000
+mw1,ar5,SVM,No feature in X meets the variance threshold 0.00000
+mw1,ar5,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc1,ar5,Random Forest,No feature in X meets the variance threshold 0.00000
+pc1,ar5,SVM,No feature in X meets the variance threshold 0.00000
+pc1,ar5,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc3,ar5,Random Forest,No feature in X meets the variance threshold 0.00000
+pc3,ar5,SVM,No feature in X meets the variance threshold 0.00000
+pc3,ar5,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc4,ar5,Random Forest,No feature in X meets the variance threshold 0.00000
+pc4,ar5,SVM,No feature in X meets the variance threshold 0.00000
+pc4,ar5,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc1,ar6,Random Forest,No feature in X meets the variance threshold 0.00000
+kc1,ar6,SVM,No feature in X meets the variance threshold 0.00000
+kc1,ar6,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc2,ar6,Random Forest,No feature in X meets the variance threshold 0.00000
+kc2,ar6,SVM,No feature in X meets the variance threshold 0.00000
+kc2,ar6,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc3,ar6,Random Forest,No feature in X meets the variance threshold 0.00000
+kc3,ar6,SVM,No feature in X meets the variance threshold 0.00000
+kc3,ar6,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mc2,ar6,Random Forest,No feature in X meets the variance threshold 0.00000
+mc2,ar6,SVM,No feature in X meets the variance threshold 0.00000
+mc2,ar6,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mw1,ar6,Random Forest,No feature in X meets the variance threshold 0.00000
+mw1,ar6,SVM,No feature in X meets the variance threshold 0.00000
+mw1,ar6,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc1,ar6,Random Forest,No feature in X meets the variance threshold 0.00000
+pc1,ar6,SVM,No feature in X meets the variance threshold 0.00000
+pc1,ar6,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc3,ar6,Random Forest,No feature in X meets the variance threshold 0.00000
+pc3,ar6,SVM,No feature in X meets the variance threshold 0.00000
+pc3,ar6,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc4,ar6,Random Forest,No feature in X meets the variance threshold 0.00000
+pc4,ar6,SVM,No feature in X meets the variance threshold 0.00000
+pc4,ar6,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc1,kc3,Random Forest,No feature in X meets the variance threshold 0.00000
+kc1,kc3,SVM,No feature in X meets the variance threshold 0.00000
+kc1,kc3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc3,kc1,Random Forest,No feature in X meets the variance threshold 0.00000
+kc3,kc1,SVM,No feature in X meets the variance threshold 0.00000
+kc3,kc1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc1,mc2,Random Forest,No feature in X meets the variance threshold 0.00000
+kc1,mc2,SVM,No feature in X meets the variance threshold 0.00000
+kc1,mc2,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mc2,kc1,Random Forest,No feature in X meets the variance threshold 0.00000
+mc2,kc1,SVM,No feature in X meets the variance threshold 0.00000
+mc2,kc1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc1,mw1,Random Forest,No feature in X meets the variance threshold 0.00000
+kc1,mw1,SVM,No feature in X meets the variance threshold 0.00000
+kc1,mw1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mw1,kc1,Random Forest,No feature in X meets the variance threshold 0.00000
+mw1,kc1,SVM,No feature in X meets the variance threshold 0.00000
+mw1,kc1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc1,pc3,Random Forest,No feature in X meets the variance threshold 0.00000
+kc1,pc3,SVM,No feature in X meets the variance threshold 0.00000
+kc1,pc3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc3,kc1,Random Forest,No feature in X meets the variance threshold 0.00000
+pc3,kc1,SVM,No feature in X meets the variance threshold 0.00000
+pc3,kc1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc1,pc4,Random Forest,No feature in X meets the variance threshold 0.00000
+kc1,pc4,SVM,No feature in X meets the variance threshold 0.00000
+kc1,pc4,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc4,kc1,Random Forest,No feature in X meets the variance threshold 0.00000
+pc4,kc1,SVM,No feature in X meets the variance threshold 0.00000
+pc4,kc1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc2,kc3,Random Forest,No feature in X meets the variance threshold 0.00000
+kc2,kc3,SVM,No feature in X meets the variance threshold 0.00000
+kc2,kc3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc3,kc2,Random Forest,No feature in X meets the variance threshold 0.00000
+kc3,kc2,SVM,No feature in X meets the variance threshold 0.00000
+kc3,kc2,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc2,mc2,Random Forest,No feature in X meets the variance threshold 0.00000
+kc2,mc2,SVM,No feature in X meets the variance threshold 0.00000
+kc2,mc2,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mc2,kc2,Random Forest,No feature in X meets the variance threshold 0.00000
+mc2,kc2,SVM,No feature in X meets the variance threshold 0.00000
+mc2,kc2,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc2,mw1,Random Forest,No feature in X meets the variance threshold 0.00000
+kc2,mw1,SVM,No feature in X meets the variance threshold 0.00000
+kc2,mw1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mw1,kc2,Random Forest,No feature in X meets the variance threshold 0.00000
+mw1,kc2,SVM,No feature in X meets the variance threshold 0.00000
+mw1,kc2,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc2,pc3,Random Forest,No feature in X meets the variance threshold 0.00000
+kc2,pc3,SVM,No feature in X meets the variance threshold 0.00000
+kc2,pc3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc3,kc2,Random Forest,No feature in X meets the variance threshold 0.00000
+pc3,kc2,SVM,No feature in X meets the variance threshold 0.00000
+pc3,kc2,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc2,pc4,Random Forest,No feature in X meets the variance threshold 0.00000
+kc2,pc4,SVM,No feature in X meets the variance threshold 0.00000
+kc2,pc4,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc4,kc2,Random Forest,No feature in X meets the variance threshold 0.00000
+pc4,kc2,SVM,No feature in X meets the variance threshold 0.00000
+pc4,kc2,Logistic Regression,No feature in X meets the variance threshold 0.00000
+kc3,pc1,Random Forest,No feature in X meets the variance threshold 0.00000
+kc3,pc1,SVM,No feature in X meets the variance threshold 0.00000
+kc3,pc1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc1,kc3,Random Forest,No feature in X meets the variance threshold 0.00000
+pc1,kc3,SVM,No feature in X meets the variance threshold 0.00000
+pc1,kc3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mc2,pc1,Random Forest,No feature in X meets the variance threshold 0.00000
+mc2,pc1,SVM,No feature in X meets the variance threshold 0.00000
+mc2,pc1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc1,mc2,Random Forest,No feature in X meets the variance threshold 0.00000
+pc1,mc2,SVM,No feature in X meets the variance threshold 0.00000
+pc1,mc2,Logistic Regression,No feature in X meets the variance threshold 0.00000
+mw1,pc1,Random Forest,No feature in X meets the variance threshold 0.00000
+mw1,pc1,SVM,No feature in X meets the variance threshold 0.00000
+mw1,pc1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc1,mw1,Random Forest,No feature in X meets the variance threshold 0.00000
+pc1,mw1,SVM,No feature in X meets the variance threshold 0.00000
+pc1,mw1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc1,pc3,Random Forest,No feature in X meets the variance threshold 0.00000
+pc1,pc3,SVM,No feature in X meets the variance threshold 0.00000
+pc1,pc3,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc3,pc1,Random Forest,No feature in X meets the variance threshold 0.00000
+pc3,pc1,SVM,No feature in X meets the variance threshold 0.00000
+pc3,pc1,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc1,pc4,Random Forest,No feature in X meets the variance threshold 0.00000
+pc1,pc4,SVM,No feature in X meets the variance threshold 0.00000
+pc1,pc4,Logistic Regression,No feature in X meets the variance threshold 0.00000
+pc4,pc1,Random Forest,No feature in X meets the variance threshold 0.00000
+pc4,pc1,SVM,No feature in X meets the variance threshold 0.00000
+pc4,pc1,Logistic Regression,No feature in X meets the variance threshold 0.00000

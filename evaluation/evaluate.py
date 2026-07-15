@@ -116,7 +116,7 @@ def html_report(results, pred_df, out):
         )
     rows = "".join(rows_list)
     html = f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>Defect Prediction Report</title>
+<title>DefectInsight Report</title>
 <style>
   body{{font-family:Arial,sans-serif;max-width:1100px;margin:0 auto;padding:24px;color:#1A202C}}
   h1{{color:#2C3E50;border-bottom:3px solid #3182CE;padding-bottom:8px}}
@@ -131,7 +131,7 @@ def html_report(results, pred_df, out):
   .imgs{{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}}
   .imgs img{{width:100%;border:1px solid #E2E8F0;border-radius:8px}}
 </style></head><body>
-<h1>Defect Prediction Report</h1>
+<h1>DefectInsight Report</h1>
 <div class="summary">
   <b>Best model:</b> {best} &nbsp;|&nbsp;
   <b>F1:</b> {bm.get('f1',0):.4f} &nbsp;|&nbsp;

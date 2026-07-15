@@ -1,0 +1,14 @@
+dataset,path,rows,features,class_0,class_1,status,effective_splits,n_repeats
+ar1,public_dataset_output/processed/ar1.pkl,121,58,112,9,ready,5,2
+ar3,public_dataset_output/processed/ar3.pkl,63,58,55,8,ready,5,2
+ar4,public_dataset_output/processed/ar4.pkl,107,58,87,20,ready,5,2
+ar5,public_dataset_output/processed/ar5.pkl,36,58,28,8,ready,5,2
+ar6,public_dataset_output/processed/ar6.pkl,101,58,86,15,ready,5,2
+kc1,public_dataset_output/processed/kc1.pkl,2109,51,1783,326,ready,5,2
+kc2,public_dataset_output/processed/kc2.pkl,522,51,415,107,ready,5,2
+kc3,public_dataset_output/processed/kc3.pkl,458,69,415,43,ready,5,2
+mc2,public_dataset_output/processed/mc2.pkl,161,69,109,52,ready,5,2
+mw1,public_dataset_output/processed/mw1.pkl,403,67,372,31,ready,5,2
+pc1,public_dataset_output/processed/pc1.pkl,1109,51,1032,77,ready,5,2
+pc3,public_dataset_output/processed/pc3.pkl,1563,67,1403,160,ready,5,2
+pc4,public_dataset_output/processed/pc4.pkl,1458,67,1280,178,ready,5,2

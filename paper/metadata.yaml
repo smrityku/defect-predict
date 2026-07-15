@@ -1,0 +1,21 @@
+title: "DefectInsight: Explainable File-Level Software Defect Prediction for Industrial Git Repositories"
+short_title: "DefectInsight"
+authors:
+  - name: "Smrity Ku"
+    affiliation: "TBD"
+    email: "TBD"
+template:
+  name: "IEEEtran"
+  class_options:
+    - "conference"
+keywords:
+  - "software defect prediction"
+  - "explainable AI"
+  - "file-level prediction"
+  - "industrial Git repositories"
+  - "repeated stratified cross-validation"
+artifacts:
+  cv_statistics: "results/cv_stats/"
+  feature_importance: "results/feature_importance/"
+  confusion_matrices: "results/confusion_matrices/"
+  research_questions: "docs/research_questions.md"

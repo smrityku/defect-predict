@@ -1,0 +1,197 @@
+[
+  {
+    "dataset": "ar1",
+    "rows": 121,
+    "columns": 30,
+    "target_column": "defects",
+    "class_counts": {
+      "false": 112,
+      "true": 9
+    },
+    "csv_path": "public_dataset_output/raw_csv/ar1.csv",
+    "openml_dataset_id": 1059,
+    "openml_file_id": 53942,
+    "download_url": "https://www.openml.org/data/v1/download/53942",
+    "source": "OpenML / PROMISE NASA MDP AR1"
+  },
+  {
+    "dataset": "ar3",
+    "rows": 63,
+    "columns": 30,
+    "target_column": "defects",
+    "class_counts": {
+      "false": 55,
+      "true": 8
+    },
+    "csv_path": "public_dataset_output/raw_csv/ar3.csv",
+    "openml_dataset_id": 1060,
+    "openml_file_id": 53943,
+    "download_url": "https://www.openml.org/data/v1/download/53943",
+    "source": "OpenML / PROMISE NASA MDP AR3"
+  },
+  {
+    "dataset": "ar4",
+    "rows": 107,
+    "columns": 30,
+    "target_column": "defects",
+    "class_counts": {
+      "false": 87,
+      "true": 20
+    },
+    "csv_path": "public_dataset_output/raw_csv/ar4.csv",
+    "openml_dataset_id": 1061,
+    "openml_file_id": 53944,
+    "download_url": "https://www.openml.org/data/v1/download/53944",
+    "source": "OpenML / PROMISE NASA MDP AR4"
+  },
+  {
+    "dataset": "ar5",
+    "rows": 36,
+    "columns": 30,
+    "target_column": "defects",
+    "class_counts": {
+      "false": 28,
+      "true": 8
+    },
+    "csv_path": "public_dataset_output/raw_csv/ar5.csv",
+    "openml_dataset_id": 1062,
+    "openml_file_id": 53945,
+    "download_url": "https://www.openml.org/data/v1/download/53945",
+    "source": "OpenML / PROMISE NASA MDP AR5"
+  },
+  {
+    "dataset": "ar6",
+    "rows": 101,
+    "columns": 30,
+    "target_column": "defects",
+    "class_counts": {
+      "false": 86,
+      "true": 15
+    },
+    "csv_path": "public_dataset_output/raw_csv/ar6.csv",
+    "openml_dataset_id": 1064,
+    "openml_file_id": 53947,
+    "download_url": "https://www.openml.org/data/v1/download/53947",
+    "source": "OpenML / PROMISE NASA MDP AR6"
+  },
+  {
+    "dataset": "kc1",
+    "rows": 2109,
+    "columns": 22,
+    "target_column": "defects",
+    "class_counts": {
+      "false": 1783,
+      "true": 326
+    },
+    "csv_path": "public_dataset_output/raw_csv/kc1.csv",
+    "openml_dataset_id": 1067,
+    "openml_file_id": 53950,
+    "download_url": "https://www.openml.org/data/v1/download/53950",
+    "source": "OpenML / PROMISE NASA MDP KC1"
+  },
+  {
+    "dataset": "kc2",
+    "rows": 522,
+    "columns": 22,
+    "target_column": "problems",
+    "class_counts": {
+      "no": 415,
+      "yes": 107
+    },
+    "csv_path": "public_dataset_output/raw_csv/kc2.csv",
+    "openml_dataset_id": 1063,
+    "openml_file_id": 53946,
+    "download_url": "https://www.openml.org/data/v1/download/53946",
+    "source": "OpenML / PROMISE NASA MDP KC2"
+  },
+  {
+    "dataset": "kc3",
+    "rows": 458,
+    "columns": 40,
+    "target_column": "c",
+    "class_counts": {
+      "FALSE": 415,
+      "TRUE": 43
+    },
+    "csv_path": "public_dataset_output/raw_csv/kc3.csv",
+    "openml_dataset_id": 1065,
+    "openml_file_id": 53948,
+    "download_url": "https://www.openml.org/data/v1/download/53948",
+    "source": "OpenML / PROMISE NASA MDP KC3"
+  },
+  {
+    "dataset": "mc2",
+    "rows": 161,
+    "columns": 40,
+    "target_column": "c",
+    "class_counts": {
+      "FALSE": 109,
+      "TRUE": 52
+    },
+    "csv_path": "public_dataset_output/raw_csv/mc2.csv",
+    "openml_dataset_id": 1054,
+    "openml_file_id": 53937,
+    "download_url": "https://www.openml.org/data/v1/download/53937",
+    "source": "OpenML / PROMISE NASA MDP MC2"
+  },
+  {
+    "dataset": "mw1",
+    "rows": 403,
+    "columns": 38,
+    "target_column": "c",
+    "class_counts": {
+      "FALSE": 372,
+      "TRUE": 31
+    },
+    "csv_path": "public_dataset_output/raw_csv/mw1.csv",
+    "openml_dataset_id": 1071,
+    "openml_file_id": 53954,
+    "download_url": "https://www.openml.org/data/v1/download/53954",
+    "source": "OpenML / PROMISE NASA MDP MW1"
+  },
+  {
+    "dataset": "pc1",
+    "rows": 1109,
+    "columns": 22,
+    "target_column": "defects",
+    "class_counts": {
+      "false": 1032,
+      "true": 77
+    },
+    "csv_path": "public_dataset_output/raw_csv/pc1.csv",
+    "openml_dataset_id": 1068,
+    "openml_file_id": 53951,
+    "download_url": "https://www.openml.org/data/v1/download/53951",
+    "source": "OpenML / PROMISE NASA MDP PC1"
+  },
+  {
+    "dataset": "pc3",
+    "rows": 1563,
+    "columns": 38,
+    "target_column": "c",
+    "class_counts": {
+      "FALSE": 1403,
+      "TRUE": 160
+    },
+    "csv_path": "public_dataset_output/raw_csv/pc3.csv",
+    "openml_dataset_id": 1050,
+    "openml_file_id": 53933,
+    "download_url": "https://www.openml.org/data/v1/download/53933",
+    "source": "OpenML / PROMISE NASA MDP PC3"
+  },
+  {
+    "dataset": "pc4",
+    "rows": 1458,
+    "columns": 38,
+    "target_column": "c",
+    "class_counts": {
+      "FALSE": 1280,
+      "TRUE": 178
+    },
+    "csv_path": "public_dataset_output/raw_csv/pc4.csv",
+    "openml_dataset_id": 1049,
+    "openml_file_id": 53932,
+    "download_url": "https://www.openml.org/data/v1/download/53932",
+    "source": "OpenML / PROMISE NASA MDP PC4"
+  }
+]

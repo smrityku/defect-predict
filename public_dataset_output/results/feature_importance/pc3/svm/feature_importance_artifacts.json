@@ -1,0 +1,7 @@
+{
+  "SVM": {
+    "importance": "public_dataset_output/results/feature_importance/pc3/svm/permutation_svm.csv",
+    "plot": "public_dataset_output/results/feature_importance/pc3/svm/permutation_svm.png",
+    "source": "permutation"
+  }
+}

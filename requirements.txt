@@ -1,12 +1,14 @@
-pandas>=2.0
-numpy>=1.24
-scikit-learn>=1.3
-scipy>=1.10
-matplotlib>=3.7
-seaborn>=0.12
-flask>=3.0
-joblib>=1.3
-# optional (install if available):
-# shap
-# lizard
-# gitpython
+pandas==2.3.3
+numpy==2.0.2
+scikit-learn==1.6.1
+scipy==1.13.1
+matplotlib==3.9.4
+seaborn==0.13.2
+flask==3.1.3
+joblib==1.5.3
+shap==0.46.0
+scikit-posthocs==0.9.0
+GitPython==3.1.43
+lizard==1.17.31
+dask[dataframe]==2024.12.1
+xgboost==2.1.3
