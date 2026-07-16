@@ -24,6 +24,8 @@ reports/**
 
 # ML models / checkpoints
 data/models/
+rendered-author-check/
+work-docx/
 
 # Python cache
 __pycache__/
