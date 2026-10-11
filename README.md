@@ -1,4 +1,4 @@
-# DefectInsight: An Explainable Industrial Software Defect Prediction Framework
+# DefectInsight: An Explainable Industrial Software Defect Prediction Framework updated
 
 DefectInsight is an explainable file-level software defect prediction framework
 for industrial Git repositories. It extracts repository history, builds static
